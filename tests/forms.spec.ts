@@ -7,7 +7,7 @@ import students from '../data/datasets.json';
 //used iteration to loop through each dataset and run the same test for each set of data,
 // ensuring that the form submission works correctly for different inputs.
 test.describe('Student Form Tests', () => {
-  test.setTimeout(800000); // ✅ 
+  test.setTimeout(800000); 
   // added 10 minutes timeout to accommodate 
   // slow page loading and form submission processes
   //this should not be happening on a normal scenario
@@ -19,12 +19,8 @@ test.describe('Student Form Tests', () => {
     test(`Submit form for ${data.firstName}`, async ({ page }) => {
       const form = new pageObjects(page);
 
-      await form.goto(data); // keep clean, no data dependency
-
-      await form.fillForm(data);
-      await form.submit();
-      await form.verifySubmission();
-      await form.dataValidation(data);
-    });
+      await form.goto(data); //browser navigates to the URL specified in the dataset
+      await form.fillForm(data); //fillout the form with the data from the dataset
+      await form.dataValidation(data);}); //validate the submitted form data against the input data from the dataset
   }
 });

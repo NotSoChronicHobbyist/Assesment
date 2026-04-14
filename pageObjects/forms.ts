@@ -1,4 +1,4 @@
-import test, { Page, chromium, expect } from '@playwright/test';
+import { Page, expect } from '@playwright/test';
 
 export class pageObjects {
   constructor(private page: Page) { 
@@ -8,12 +8,9 @@ export class pageObjects {
   //this will open the web page for each dataset, 
   // allowing us to run the same test with different data sets without 
   // hardcoding the URL in the page object class.
-
   
   async goto(data: any) {
     await this.page.goto(data.url);
-    await this.page.waitForLoadState('networkidle'); // wait for the page to load completely
-    await this.page.context().storageState({ path: 'storageState.json' });// saving session since page is loading slow
     console.log(`Navigated to URL: ${data.url}`);
 
   }
@@ -36,34 +33,41 @@ async fillForm(data: any) {
     await this.page.fill('#userNumber', data.mobile);
     console.log(`Filled mobile number: ${data.mobile}`);
 
+    await this.page.click('#dateOfBirthInput');
+    await this.page.selectOption('.react-datepicker__month-select', { label: data.month });
+    await this.page.selectOption('.react-datepicker__year-select', { label: data.year });
+    await this.page.click(`.react-datepicker__day--0${data.day}:not(.react-datepicker__day--outside-month)`);
+    console.log(`Selected date of birth: ${data.day} ${data.month}, ${data.year}`);
+
+    await this.page.click('#subjectsInput');//click the subjects input to activate the dropdown
     await this.page.fill('#subjectsInput', data.subject);
     console.log(`Filled subjects: ${data.subject}`);
-    await this.page.keyboard.press('Enter');
+    await this.page.keyboard.press('Tab');
 
     await this.page.getByLabel(data.hobby).check();
     console.log(`Selected hobby: ${data.hobby}`);
+
+    await this.page.locator('#uploadPicture').setInputFiles('files/sample.jpg');
 
     await this.page.fill('#currentAddress', data.address);
     console.log(`Filled address: ${data.address}`);
 
     await this.page.fill('#react-select-3-input', data.state);
     console.log(`Filled state: ${data.state}`);
-    await this.page.keyboard.press('Enter');
+    await this.page.keyboard.press('Tab');
     
     await this.page.fill('#react-select-4-input', data.city);
     console.log(`Filled city: ${data.city}`);
-    await this.page.keyboard.press('Enter');
+    await this.page.keyboard.press('Tab');
 
+    this.submit(); // submit the form after filling it out
   }
 
   async submit() {
     await this.page.click('#submit');
     console.log('Form submitted');
-  }
-
-  async verifySubmission() {
     await expect(this.page.locator('.modal-content')).toBeVisible();
-    console.log('Submission verified');
+    console.log('Submission verified');  
   }
 
   async dataValidation(data: any) {
@@ -74,17 +78,12 @@ async fillForm(data: any) {
     await expect(this.page.locator('td:has-text("Date of Birth") + td')).toHaveText(`${data.day} ${data.month},${data.year}`);
     await expect(this.page.locator('td:has-text("Subjects") + td')).toHaveText(data.subject);
     await expect(this.page.locator('td:has-text("Hobbies") + td')).toHaveText(data.hobby);
+    await expect(this.page.locator('td:has-text("Picture") + td')).toHaveText('sample.jpg');
     await expect(this.page.locator('td:has-text("Address") + td')).toHaveText(data.address);
     await expect(this.page.locator('td:has-text("State and City") + td')).toHaveText(`${data.state} ${data.city}`);
     console.log('Data validation completed successfully');
-  }    
+  }   
 
-async closeModal() {
-    await this.page.click('#closeLargeModal');
-    await expect(this.page.locator('.modal-content')).not.toBeVisible();
-    console.log('Modal failed to close, this is expected to have an error as the close button is not working, but it will be fixed in the next steps of the assessment.');
-    //this is expected to have an error as the close button is not working, 
-    // but it will be fixed in the next steps of the assessment.
-  }
+
 
 }
