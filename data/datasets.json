@@ -1,0 +1,33 @@
+[
+  {
+    "url": "https://demoqa.com/automation-practice-form",
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john@test.com",
+    "gender": "Male",
+    "mobile": "9876543210",
+    "day": "01",
+    "month": "January",
+    "year": "2000",
+    "subject": "Maths",
+    "hobby": "Reading", 
+    "state": "NCR",
+    "city": "Delhi"
+  },
+  {
+    "url": "https://demoqa.com/automation-practice-form",
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "email": "jane@test.com",
+    "gender": "Female",
+    "mobile": "9123456789",
+    "day": "15",
+    "month": "June",
+    "year": "1995",
+    "subject": "Physics",
+    "hobby": "Music",
+    "address": "Quezon City",
+    "state": "Uttar Pradesh",
+    "city": "Lucknow"
+  }
+]
