@@ -1,6 +1,6 @@
 import { Page, expect } from '@playwright/test';
 
-export class pageObjects {
+export class forms {
   constructor(private page: Page) { 
   }
 
@@ -10,7 +10,7 @@ export class pageObjects {
   // hardcoding the URL in the page object class.
   
   async goto(data: any) {
-    await this.page.goto(data.url);
+    await this.page.goto(data.url,{ waitUntil: 'domcontentloaded' });
     console.log(`Navigated to URL: ${data.url}`);
 
   }

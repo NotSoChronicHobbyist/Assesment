@@ -5,6 +5,8 @@ export default defineConfig({
   //for the slow loading performance of the site, allowing us to run multiple tests simultaneously
   //  and reduce overall test execution time.
   fullyParallel: true,
+  workers: 4,
+
   use: {
 
     channel: 'chrome',
